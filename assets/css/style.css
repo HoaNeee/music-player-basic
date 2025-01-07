@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f3f2f7;
+}
+
+/* music-playing */
+.music-playing {
+  text-align: center;
+  background: white;
+  padding-top: 10px;
+  background-image: linear-gradient(
+    rgb(255, 255, 255),
+    #ffc0d3,
+    rgb(255, 255, 255)
+  );
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  top: 0;
+  /* transition: all ease-in-out 150ms; */
+}
+
+/* img {
+  width: 100px;
+} */
+
+.playing__tag {
+  margin: 0;
+  font-size: 14px;
+  color: #ed235f;
+  font-weight: 600;
+}
+.playing__name {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 500px;
+}
+
+.playing__image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.playing__control {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  margin: 0 30px;
+  align-items: center;
+}
+.playing__control i {
+  font-size: 23px;
+  color: #9c9c9c;
+}
+.playing__control i:hover {
+  cursor: pointer;
+}
+.playing__control i:nth-child(3) {
+  font-size: 23px;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  background: #ed235f;
+  color: white;
+  font-size: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playing__control i:nth-child(1).active {
+  color: #ed235f;
+}
+
+.playing__control i:nth-child(5).active {
+  color: #ed235f;
+}
+
+.playing__progress {
+  width: 90%;
+  margin-bottom: 10px;
+  appearance: none;
+  background: #d1d1d1;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  outline: none;
+
+  accent-color: #ed235f;
+}
+
+/*End music-playing */
+
+/* music-list */
+.music-list {
+  background: #f3f2f7;
+  padding: 8px 0;
+  margin-top: 415px;
+}
+.list__item {
+  display: flex;
+  align-items: center;
+  background: white;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+  border-radius: 5px;
+}
+.list__item:hover {
+  cursor: pointer;
+}
+.list__item .item__content {
+  margin-left: 20px;
+  flex: 1;
+}
+.list__item .item__content .item__title {
+  margin: 0;
+}
+.list__item .item__content .item__author {
+  margin: 0;
+  font-size: 15px;
+  color: #9c9c9c;
+}
+.list__item .item__image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.list__item .item__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.list__item::after {
+  content: "...";
+  font-size: 35px;
+  position: absolute;
+  top: 0;
+  right: 17px;
+  color: #9c9c9c;
+}
+/*End music-list */

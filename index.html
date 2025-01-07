@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="assets/css/style.css">
+
+<body>
+    <!-- music playing -->
+    <div class="music-playing">
+        <p class="playing__tag">Now playing: </p>
+        <h3 class="playing__name">ten bai hat</h3>
+        <div class="playing__image">
+            <img src="assets/images/song-image-1.png" alt="">
+        </div>
+        <div class="playing__control">
+            <i class="fa-solid fa-rotate-right" id="control-loop"></i>
+            <i class="fa-solid fa-backward-step" id="control-prev"></i>
+            <i class="fa-solid fa-play" id="control-play"></i>
+            <i class="fa-solid fa-forward-step" id="control-next"></i>
+            <i class="fa-solid fa-shuffle" id="control-random"></i>
+        </div>
+        <input type="range" max="100" min="0" step="1" value="0" class="playing__progress">
+        <audio src="" controls hidden></audio>
+    </div>
+    <!--End music playing -->
+
+    <!-- list -->
+    <div class="music-list">
+        <div class="list__item">
+            <div class="item__image">
+                <img src="assets/images/song-image-10.png" alt="">
+            </div>
+            <div class="item__content">
+                <h3 class="item__title">ten bai hat</h3>
+                <p class="item__author">tac gia</p>
+            </div>
+
+        </div>
+
+    </div>
+    <!--End list -->
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
