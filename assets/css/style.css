@@ -112,7 +112,14 @@ body {
   padding: 10px;
   position: relative;
   border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
+.list__item.active {
+  color: #fff;
+  background: #ed235f;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
 .list__item:hover {
   cursor: pointer;
 }
@@ -139,6 +146,9 @@ body {
   height: 100%;
   object-fit: cover;
 }
+.list__item:active {
+  opacity: 0.6;
+}
 .list__item::after {
   content: "...";
   font-size: 35px;
@@ -146,5 +156,11 @@ body {
   top: 0;
   right: 17px;
   color: #9c9c9c;
+}
+.list__item.active .item__content .item__author {
+  color: #fff;
+}
+.list__item.active::after {
+  color: #fff;
 }
 /*End music-list */

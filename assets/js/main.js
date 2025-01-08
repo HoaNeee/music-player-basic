@@ -1,3 +1,5 @@
+const PLAYER_KEY_LOCAL_STORAGE = "user";
+
 const song = {
   songs: [
     {
@@ -73,16 +75,27 @@ const song = {
       image: "assets/images/song-image-12.png",
     },
   ],
+  currentIndex: 0,
+  isPlaying: false,
+  isRandom: false,
+  indexRandom: 0,
+  isLoop: false,
   domElement: {
     audio: document.querySelector("audio"),
     progress: document.querySelector(".playing__progress"),
   },
+  config: JSON.parse(localStorage.getItem(PLAYER_KEY_LOCAL_STORAGE)) || {},
+  setConfigLocal: function (key, value) {
+    this.config[key] = value;
+    localStorage.setItem(PLAYER_KEY_LOCAL_STORAGE, JSON.stringify(this.config));
+  },
+
   getListSongs: function () {
     const listSong = document.querySelector(".music-list");
     let htmls = ``;
-    this.songs.forEach((item) => {
+    this.songs.forEach((item, index) => {
       htmls += `
-        <div class="list__item">
+        <div class="list__item" data-index="${index}">
             <div class="item__image">
                 <img src="${item.image}" alt="">
             </div>
@@ -95,15 +108,28 @@ const song = {
     });
     listSong.innerHTML = htmls;
   },
-  currentIndex: 0,
-  isPlaying: false,
-  isRandom: false,
-  indexRandom: 0,
-  isLoop: false,
+
   loadSong: function () {
+    const _this = this;
+
     const nameSong = document.querySelector(".playing__name");
     const imageSong = document.querySelector(".playing__image img");
+    const itemList = document.querySelectorAll(".list__item");
 
+    for (let i = 0; i < itemList.length; i++) {
+      itemList[i].classList.remove("active");
+    }
+    for (let i = 0; i < itemList.length; i++) {
+      if (parseInt(itemList[i].dataset.index) === _this.currentIndex) {
+        itemList[i].classList.add("active");
+        setTimeout(() => {
+          itemList[i].scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 300);
+      }
+    }
     nameSong.innerHTML = this.songs[this.currentIndex].name;
     imageSong.setAttribute("src", this.songs[this.currentIndex].image);
     this.domElement.audio.setAttribute(
@@ -120,6 +146,7 @@ const song = {
     const audio = this.domElement.audio;
     window.addEventListener("keypress", function (e) {
       e.preventDefault();
+
       if (e.key === " ") {
         if (!_this.isPlaying) {
           audio.play();
@@ -137,12 +164,15 @@ const song = {
 
       console.log("playing is ", _this.isPlaying);
     });
+
+    //rotate image
     const image = document.querySelector(".playing__image img");
     const animateImage = image.animate([{ transform: "rotate(360deg)" }], {
       duration: 10000,
       iterations: Infinity,
     });
     animateImage.pause();
+
     audio.onplay = function () {
       _this.isPlaying = true;
       btnPlay.classList.remove("fa-play");
@@ -183,6 +213,7 @@ const song = {
         }
         _this.loadSong();
         audio.play();
+        _this.setConfigLocal("currentIndex", _this.currentIndex);
       }
     };
     audio.addEventListener("timeupdate", progressUpdate);
@@ -202,9 +233,13 @@ const song = {
 
     btnRandom.addEventListener("click", function (e) {
       _this.isRandom = !_this.isRandom;
-      this.classList.toggle("active");
+      _this.setConfigLocal("isRandom", _this.isRandom);
+      this.classList.toggle("active", _this.isRandom);
       console.log("random is ", _this.isRandom);
     });
+    if (_this.isRandom) {
+      btnRandom.classList.add("active");
+    }
   },
   nextAndPrevEvents: function () {
     const _this = this;
@@ -231,6 +266,7 @@ const song = {
       } else {
         _this.domElement.audio.pause();
       }
+      _this.setConfigLocal("currentIndex", _this.currentIndex);
     });
     btnPrev.addEventListener("click", function (e) {
       if (_this.currentIndex > 0) {
@@ -242,6 +278,15 @@ const song = {
           _this.domElement.audio.pause();
         }
       }
+      _this.setConfigLocal("currentIndex", _this.currentIndex);
+    });
+    window.addEventListener("keydown", function (e) {
+      // e.preventDefault();
+      if (e.key === "ArrowRight") {
+        btnNext.click();
+      } else if (e.key === "ArrowLeft") {
+        btnPrev.click();
+      }
     });
   },
   loopEvent: function () {
@@ -250,12 +295,18 @@ const song = {
 
     btnLoop.addEventListener("click", function (e) {
       _this.isLoop = !_this.isLoop;
-      btnLoop.classList.toggle("active");
+      _this.setConfigLocal("isLoop", _this.isLoop);
+      btnLoop.classList.toggle("active", _this.isLoop);
+
       console.log("loop is ", _this.isLoop);
     });
+    if (_this.isLoop) {
+      btnLoop.classList.add("active");
+    }
   },
   selectSongEvent: function () {
     const _this = this;
+
     const musicList = document.querySelector(".music-list");
     const listItem = musicList.querySelectorAll(".list__item");
     listItem.forEach((item, index) => {
@@ -264,6 +315,7 @@ const song = {
         _this.loadSong();
         _this.isPlaying = true;
         _this.domElement.audio.play();
+        _this.setConfigLocal("currentIndex", _this.currentIndex);
       });
     });
   },
@@ -284,9 +336,15 @@ const song = {
       }
     });
   },
+  loadConfigLocal: function () {
+    this.currentIndex = this.config["currentIndex"] || 0;
+    this.isLoop = this.config["isLoop"] || false;
+    this.isRandom = this.config["isRandom"] || false;
+  },
   run: function () {
     const _this = this;
     this.getListSongs();
+    this.loadConfigLocal();
     this.loadSong();
     this.playEvent();
     this.domElement.audio.addEventListener("loadedmetadata", function () {
@@ -297,7 +355,7 @@ const song = {
     this.randomEvent();
     this.loopEvent();
     this.selectSongEvent();
-    _this.scrollList();
+    this.scrollList();
   },
 };
 
